@@ -1,0 +1,15 @@
+/home/blanco/Lilim/current/lilim_tray/target/debug/deps/markup5ever-3dd545ece7637e67.d: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/data/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/tree_builder.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/serialize.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/buffer_queue.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/smallcharset.rs /home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/generated.rs /home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/named_entities.rs
+
+/home/blanco/Lilim/current/lilim_tray/target/debug/deps/libmarkup5ever-3dd545ece7637e67.rmeta: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/data/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/tree_builder.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/serialize.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/buffer_queue.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/smallcharset.rs /home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/generated.rs /home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/named_entities.rs
+
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/lib.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/data/mod.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/mod.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/interface/tree_builder.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/serialize.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/buffer_queue.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.11.0/util/smallcharset.rs:
+/home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/generated.rs:
+/home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out/named_entities.rs:
+
+# env-dep:OUT_DIR=/home/blanco/Lilim/current/lilim_tray/target/debug/build/markup5ever-fd3736cf2ed17a29/out

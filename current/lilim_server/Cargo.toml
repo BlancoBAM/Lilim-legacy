@@ -1,0 +1,33 @@
+[package]
+name = "lilim_server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Local core library
+lilim_core = { path = "../lilim_core" }
+
+# Web server
+axum = "0.7"
+tower = "0.5"
+tower-http = { version = "0.6", features = ["cors", "trace"] }
+
+# API clients
+reqwest = { version = "0.12", features = ["json"] }
+
+# Utility
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+tokio = { version = "1.0", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Tools
+scraper = "0.20"
+async-trait = "0.1"
+uuid = { version = "1.0", features = ["v4"] }
+walkdir = "2.5"
+regex = "1.11"
+urlencoding = "2.1"

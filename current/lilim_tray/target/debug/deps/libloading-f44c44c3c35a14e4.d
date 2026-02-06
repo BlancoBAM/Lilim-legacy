@@ -1,0 +1,12 @@
+/home/blanco/Lilim/current/lilim_tray/target/debug/deps/libloading-f44c44c3c35a14e4.d: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/changelog.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/consts.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/util.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/error.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/safe.rs
+
+/home/blanco/Lilim/current/lilim_tray/target/debug/deps/liblibloading-f44c44c3c35a14e4.rmeta: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/changelog.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/mod.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/consts.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/util.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/error.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/safe.rs
+
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/lib.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/changelog.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/mod.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/mod.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/os/unix/consts.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/util.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/error.rs:
+/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libloading-0.7.4/src/safe.rs:
