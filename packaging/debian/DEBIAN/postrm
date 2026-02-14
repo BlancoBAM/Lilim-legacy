@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+# Clean up autostart
+rm -f /etc/xdg/autostart/lilim.desktop || true
+
+# Optionally remove user and data (commented out by default to preserve data)
+# echo "To completely remove all data, run:"
+# echo "  sudo userdel -r lilith"
+# echo "  sudo rm -rf /var/lib/lilith /var/log/lilith /etc/lilith"
+
+echo "Lilim AI Assistant has been removed."
+echo "User data preserved in /var/lib/lilith"
+
+exit 0

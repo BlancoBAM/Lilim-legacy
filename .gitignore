@@ -1,16 +1,81 @@
-# Node rules:
-## Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
+# Gitignore for Lilim AI Assistant
 
-## Dependency directory
-## Commenting this out is preferred by some people, see
-## https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
-node_modules
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
 
-# Book build output
-_book
+# Node / NPM
+node_modules/
+dist/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
 
-# eBook build output
-*.epub
-*.mobi
-*.pdf
+# Tauri
+lilim_desktop/src-tauri/target/
+lilim_desktop/src-tauri/Cargo.lock
+
+# Build artifacts
+*.deb
+*.rpm
+*.appimage
+packaging/debian/usr/
+packaging/debian/etc/
+packaging/debian/lib/
+
+# Models (too large for git)
+*.gguf
+*.bin
+*.safetensors
+models/
+
+# RAG indices
+rag_index/
+keyword_index/
+*.vec
+*.idx
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Python (if any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Config overrides (keep template)
+config/lilim.yaml.local

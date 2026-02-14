@@ -1,0 +1,51 @@
+[Unit]
+Description=Lilim AI Assistant - Lilith Linux AI Service
+Documentation=file:///usr/share/doc/lilith-ai/USER_MANUAL.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=lilith
+Group=lilith
+ExecStart=/usr/bin/lilim_server
+WorkingDirectory=/var/lib/lilith
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=30
+TimeoutStopSec=30
+
+# Environment Configuration
+Environment=RUST_LOG=info
+Environment=LILIM_CONFIG=/etc/lilith/lilim.yaml
+Environment=RAG_INDEX=/var/lib/lilith/rag_index
+Environment=KEYWORD_INDEX=/var/lib/lilith/keyword_index
+Environment=MEMORY_DB=/var/lib/lilith/memory.db
+
+# Security Hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/lilith /var/log/lilith
+ReadOnlyPaths=/etc/lilith
+InaccessiblePaths=/root /home
+
+# Additional Security
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+# Resource Limits (for 8GB RAM system)
+MemoryMax=2G
+MemoryHigh=1.5G
+CPUQuota=75%
+TasksMax=512
+
+[Install]
+WantedBy=multi-user.target

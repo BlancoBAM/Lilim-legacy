@@ -1,0 +1,84 @@
+#!/bin/bash
+set -e
+
+echo "Installing Lilim AI Assistant..."
+
+# Create system user and directories
+if ! id -u lilith > /dev/null 2>&1; then
+    useradd -r -s /bin/false -d /var/lib/lilith lilith
+fi
+
+# Create data directories
+mkdir -p /var/lib/lilith/models
+mkdir -p /var/lib/lilith/rag_index
+mkdir -p /var/log/lilith
+chown -R lilith:lilith /var/lib/lilith
+chown -R lilith:lilith /var/log/lilith
+
+# Download models if not present
+MODEL_DIR="/var/lib/lilith/models"
+
+download_model() {
+    local model_name="$1"
+    local model_url="$2"
+    local model_path="$MODEL_DIR/$model_name"
+    
+    if [ ! -f "$model_path" ]; then
+        echo "Downloading $model_name..."
+        wget --progress=bar:force -O "$model_path" "$model_url" 2>&1 || {
+            echo "Warning: Failed to download $model_name"
+            echo "You can manually download it later to $model_path"
+        }
+    else
+        echo "$model_name already exists."
+    fi
+}
+
+# Download neutts-nano TTS model
+download_model "neutts-nano-q4.gguf" \
+    "https://huggingface.co/neuphonic/neutts-nano-q4-gguf/resolve/main/neutts-nano-q4.gguf"
+
+# Note: Qwen models would need to be downloaded from HuggingFace
+# These are larger downloads and should be handled separately
+echo ""
+echo "NOTE: Main AI models (Qwen2-0.5B, Qwen3-VL-4B) need to be downloaded separately:"
+echo "  Visit: https://huggingface.co/Qwen/"
+echo "  Place models in: /var/lib/lilith/models/"
+echo ""
+
+# Set permissions
+chown -R lilith:lilith "$MODEL_DIR"
+chmod 755 /usr/bin/lilim-desktop
+chmod 644 /etc/lilith/lilim.yaml
+
+# Enable and start systemd service (if systemd is available)
+if command -v systemctl > /dev/null 2>&1; then
+    systemctl daemon-reload
+    systemctl enable lilith-ai.service || true
+    systemctl start lilith-ai.service || true
+fi
+
+# Set up desktop autostart
+mkdir -p /etc/xdg/autostart
+if [ -f /usr/share/applications/lilim.desktop ]; then
+    cp /usr/share/applications/lilim.desktop /etc/xdg/autostart/
+fi
+
+echo ""
+echo "╔════════════════════════════════════════════════════════╗"
+echo "║  Lilim AI Assistant Installation Complete!            ║"
+echo "╚════════════════════════════════════════════════════════╝"
+echo ""
+echo "Quick Start:"
+echo "  - Press Ctrl+L to open Lilim anytime"
+echo "  - Press Ctrl+Shift+M for TTS screen reader"
+echo "  - Check system tray for Lilim icon"
+echo ""
+echo "Configuration: /etc/lilith/lilim.yaml"
+echo "Logs: /var/log/lilith/lilim.log"
+echo ""
+echo "To download AI models, see:"
+echo "  /usr/share/doc/lilim-ai/README.md"
+echo ""
+
+exit 0

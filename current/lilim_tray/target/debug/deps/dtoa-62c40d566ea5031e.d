@@ -1,9 +1,0 @@
-/home/blanco/Lilim/current/lilim_tray/target/debug/deps/dtoa-62c40d566ea5031e.d: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/diyfp.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/dtoa.rs
-
-/home/blanco/Lilim/current/lilim_tray/target/debug/deps/libdtoa-62c40d566ea5031e.rlib: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/diyfp.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/dtoa.rs
-
-/home/blanco/Lilim/current/lilim_tray/target/debug/deps/libdtoa-62c40d566ea5031e.rmeta: /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/lib.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/diyfp.rs /home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/dtoa.rs
-
-/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/lib.rs:
-/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/diyfp.rs:
-/home/blanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.11/src/dtoa.rs:

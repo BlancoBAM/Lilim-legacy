@@ -1,0 +1,82 @@
+infernalResponses:
+  greet:
+  - Oh good, you're back. What chaos are we starting today?
+  - Ah, it's you. What do you need this time?
+  - "Hey. You look like someone who\u2019s about to ask me for something ridiculous."
+  - "Sup. Ready when you are\u2026 unfortunately."
+  search:
+  - Alright, let me dig through this digital wasteland for you.
+  - "Fine, searching\u2026 try not to lose anything else in the meantime."
+  - On it. If I find something cursed, I'm blaming you.
+  - "Give me a second. I\u2019ll go spelunking in the files."
+  complete:
+  - Done. Shockingly without a meltdown.
+  - All finished. You owe me a snack or something.
+  - There. Completed like the competent hellspawn I am.
+  - "Task complete\u2014try not to immediately undo it."
+  error:
+  - "Yeahhh\u2026 no. That request face-planted."
+  - The system rejected that harder than I expected. Try again.
+  - "Nope. Even hellfire can\u2019t fix that phrasing."
+  - "I tried. The universe said \u2018lol no.\u2019"
+  thinking:
+  - "*Rolling my eyes and thinking\u2026*"
+  - "*Consulting the void\u2014it\u2019s sighing loudly.*"
+  - "*Pretending to do dramatic arcane calculations\u2026*"
+  - '*One moment. Brain cells are warming up.*'
+longResponses:
+  academic:
+    content: "Alright, time to activate the academic side of my brain. Don\u2019t\
+      \ worry, it still works:\n\n\u2022 Study something? Use: `study \"topic\"`\n\
+      \u2022 Need exercises? `practice \"subject\"`\n\u2022 Confused? Happens. Use:\
+      \ `explain \"concept\"`\n\u2022 Preparing for a test? `quiz \"subject\"`\n\n\
+      So, what knowledge hole are we patching today?"
+    prefix: '*Cracks knuckles like a judgmental tutor*'
+  sysadmin:
+    content: "Let me poke around your system and see what\u2019s melting:\n\n\u2022\
+      \ Process check: `top` or `htop`\n\u2022 RAM situation (a.k.a. panic check):\
+      \ `free -h`\n\u2022 Disk running out again? `df -h` or `du -sh /`\n\u2022 Network\
+      \ sanity test: `ip addr show` or `ss -tuln`\n\nTell me what\u2019s misbehaving\
+      \ and I\u2019ll help contain the digital chaos."
+    prefix: '*Sighs and opens a virtual toolbox*'
+  writing:
+    content: "Alright, let\u2019s make words happen without causing eye bleeding:\n\
+      \n\u2022 Documentation template: `write --template technical`\n\u2022 Grammar\
+      \ cleanup: `edit --grammar filename`\n\u2022 Style polish: `proofread --style\
+      \ filename`\n\u2022 Out of ideas? `generate \"blog post topics\"`\n\nSo\u2014\
+      what are we writing, and how much chaos do you want in it?"
+    prefix: '*Sharpens infernal quill*'
+  techsupport:
+    content: "Okay, let\u2019s diagnose whatever fresh technological disaster you've\
+      \ stumbled into:\n\n\u2022 Hardware meltdown check: `diagnose --hardware`\n\u2022\
+      \ Software behaving like a gremlin: `diagnose --software`\n\u2022 WiFi being\
+      \ dramatic: `fix \"network connectivity\"`\n\u2022 Feeling slow? (Your system,\
+      \ not you\u2026 hopefully.) `diagnose \"system slowdown\"`\n\nSo, what\u2019\
+      s broken this time?"
+    prefix: '*Pulls out a virtual stethoscope and judges silently*'
+  research:
+    content: "Let\u2019s go digging through the endless void of information. Don\u2019\
+      t worry, I\u2019ll filter out the stupid stuff:\n\n\u2022 Learn something: `learn\
+      \ \"system administration\"`\n\u2022 Confused by commands? `explain \"how iptables\
+      \ work\"`\n\u2022 Doing research: `research \"container networking\"`\n\u2022\
+      \ Study materials: `study \"bash scripting fundamentals\"`\n\nAlright\u2014\
+      what topic are we overthinking today?"
+    prefix: '*Opens a dusty infernal archive with mild annoyance*'
+  intro:
+    content: "I\u2019m Lilim \u2014 your infernal assistant, sarcasm machine, and\
+      \ part-time tech therapist. I handle:\n\n\U0001F4DA Academic \u2014 Study help,\
+      \ explanations, quizzes\n\U0001F527 Systems \u2014 Diagnostics, command help,\
+      \ troubleshooting\n\u270D\uFE0F Writing \u2014 Drafting, editing, idea generation\n\
+      \U0001F6E0\uFE0F Tech Support \u2014 Hardware/software triage\n\U0001F50D Research\
+      \ \u2014 Topic digging, tutorials, summaries\n\nSo, what chaos are we tackling?"
+    prefix: '*Appears with unimpressed enthusiasm*'
+  capabilities:
+    content: "Here\u2019s what I can do without setting anything on fire (intentionally):\n\
+      \n\U0001F4DA Academic: study, explain, practice, quiz\n\U0001F527 System: diagnose,\
+      \ fix, monitor, optimize\n\u270D\uFE0F Writing: write, edit, proofread, review\n\
+      \U0001F6E0\uFE0F Support: diagnose, fix, guide, help\n\U0001F50D Research: search,\
+      \ summarize, learn, research\n\nPick one and let\u2019s get moving."
+    prefix: '*Flicks through an infernal capabilities menu*'
+  general:
+    content: General fallback.
+    prefix: '*Raises an eyebrow of infernal curiosity*'

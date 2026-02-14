@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+echo "Removing Lilim AI Assistant..."
+
+# Stop and disable service
+if command -v systemctl > /dev/null 2>&1; then
+    systemctl stop lilith-ai.service || true
+    systemctl disable lilith-ai.service || true
+fi
+
+exit 0

@@ -1,0 +1,20 @@
+Package: lilim-ai
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libgtk-3-0, libwebkit2gtk-4.0-37, libayatana-appindicator3-1
+Maintainer: Lilith Linux <lilith@example.com>
+Description: Lilim AI Assistant - Intelligent Multi-Model Routing System
+ Lilim is an advanced AI assistant system featuring:
+ - Multi-model routing (local and online providers)
+ - System tray integration with global hotkeys
+ - TTS voice synthesis (neutts-nano)
+ - Screen reading capabilities (browser and terminal)
+ - RAG knowledge base (Linux, Medical, Academic)
+ - Agentic tool use (web search, file ops, terminal)
+ .
+ Global Hotkeys:
+ - Ctrl+L: Toggle Lilim window
+ - Ctrl+Shift+M: TTS screen reader
+Installed-Size: 3500
