@@ -279,6 +279,16 @@ Lilim/
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Inspired By / Credits
+
+Lilim's architecture and capabilities were heavily inspired by and built upon several phenomenal open-source projects. Please check them out:
+
+- **[Open Interpreter](https://github.com/OpenInterpreter/open-interpreter)** — The core LLM execution engine and computer API that powers Lilim's brain.
+- **[ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw)** — The secure Rust runtime, gateway API, and system abstraction layer.
+- **[Rowboat](https://github.com/rowboatlabs/rowboat)** — Inspiration for the local Markdown-vault persistent memory system.
+- **[Promptomatix](https://github.com/SalesforceAIResearch/promptomatix)** — Inspiration for the automatic, transparent prompt enhancement and classification layer.
+- **[Plano](https://github.com/katanemo/plano)** — Inspiration for the intelligent, complexity-based model routing layer.
+
 ## License
 
 This project is licensed under **AGPL-3.0** (inherited from Open Interpreter and ZeroClaw).
