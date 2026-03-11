@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Lilith TTS
+GenericName=Text-to-Speech
+Comment=Voice synthesis — highlight text and press Ctrl+TTM to read aloud
+Exec=/usr/bin/lilith-tts-panel
+Icon=/usr/share/icons/lilith/tts.png
+Terminal=false
+Type=Application
+Categories=Utility;Accessibility;Audio;
+Keywords=TTS;speech;voice;read;accessibility;
+StartupWMClass=lilith-tts
+StartupNotify=false
+X-GNOME-Autostart-enabled=true

@@ -1,18 +1,22 @@
 [Desktop Entry]
-Version=1.0
-Type=Application
-Name=Lilim AI Assistant
+Name=Lilim AI
 GenericName=AI Assistant
-Comment=Lilith Linux AI Assistant - Your guide through the flames of knowledge
-Exec=xdg-open http://localhost:8080
-Icon=lilith-ai
+Comment=Your infernal AI assistant — Ctrl+Shift+L to summon
+Exec=/usr/bin/lilim-desktop
+Icon=/usr/share/icons/lilith/lilim.png
 Terminal=false
-Categories=Utility;Education;Development;
-Keywords=ai;assistant;lilim;lilith;medical;linux;tutor;chatbot;
-StartupNotify=true
+Type=Application
+Categories=Utility;Development;Science;Education;
+Keywords=AI;assistant;code;interpreter;linux;lilith;
 StartupWMClass=lilim-ai
+StartupNotify=true
+X-GNOME-Autostart-enabled=true
+Actions=toggle;settings;
 
-# Additional metadata
-X-GNOME-Autostart-enabled=false
-X-KDE-autostart-after=panel
-X-KDE-StartupNotify=true
+[Desktop Action toggle]
+Name=Toggle Lilim Window
+Exec=dbus-send --session --type=method_call --dest=com.lilith.lilim /window com.lilith.lilim.Toggle
+
+[Desktop Action settings]
+Name=Settings
+Exec=/usr/bin/lilim-desktop --settings

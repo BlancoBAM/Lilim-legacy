@@ -11,47 +11,46 @@ use tauri_plugin_global_shortcut::{Code, Modifiers, Shortcut, ShortcutState};
 mod commands;
 mod screen_reader;
 
+/// OI server base URL (configurable via LILIM_PORT env)
+const OI_SERVER: &str = "http://localhost:8000";
+
 #[tauri::command]
 async fn send_query(query: String) -> Result<String, String> {
-    // Send query to lilim_server API
+    // Send query to Open Interpreter server
     let client = reqwest::Client::new();
     let response = client
-        .post("http://localhost:8080/chat")
+        .post(format!("{}/chat", OI_SERVER))
         .json(&serde_json::json!({
-            "query": query,
-            "session_id": generate_session_id(),
+            "message": query,
         }))
         .send()
         .await
         .map_err(|e| format!("Failed to send query: {}", e))?;
 
-    let result: serde_json::Value = response
-        .json()
+    let body = response
+        .text()
         .await
-        .map_err(|e| format!("Failed to parse response: {}", e))?;
+        .map_err(|e| format!("Failed to read response: {}", e))?;
 
-    Ok(result["response"].as_str().unwrap_or("").to_string())
+    Ok(body)
 }
 
 #[tauri::command]
 async fn generate_tts(text: String) -> Result<Vec<u8>, String> {
-    // Call TTS endpoint
-    let client = reqwest::Client::new();
-    let response = client
-        .post("http://localhost:8080/tts")
-        .json(&serde_json::json!({
-            "text": text,
-            "format": "wav",
-        }))
-        .send()
+    // Generate TTS using lilith-tts binary (standalone)
+    let output = tokio::process::Command::new("lilith-tts")
+        .args(["speak", &text, "--output", "/tmp/lilim-tts-output.wav"])
+        .output()
         .await
-        .map_err(|e| format!("Failed to generate TTS: {}", e))?;
+        .map_err(|e| format!("Failed to run lilith-tts: {}", e))?;
 
-    let audio_bytes = response
-        .bytes()
+    if !output.status.success() {
+        return Err(format!("TTS failed: {}", String::from_utf8_lossy(&output.stderr)));
+    }
+
+    let audio_bytes = tokio::fs::read("/tmp/lilim-tts-output.wav")
         .await
-        .map_err(|e| format!("Failed to read audio: {}", e))?
-        .to_vec();
+        .map_err(|e| format!("Failed to read TTS output: {}", e))?;
 
     Ok(audio_bytes)
 }
@@ -127,8 +126,11 @@ fn setup_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
 fn setup_global_shortcuts<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
     let shortcut_plugin = app.state::<tauri_plugin_global_shortcut::GlobalShortcut>();
 
-    // Ctrl+L - Toggle window visibility
-    let toggle_shortcut = Shortcut::new(Some(Modifiers::CONTROL), Code::KeyL);
+    // Ctrl+Shift+L - Toggle Lilim window (global hotkey)
+    let toggle_shortcut = Shortcut::new(
+        Some(Modifiers::CONTROL | Modifiers::SHIFT),
+        Code::KeyL,
+    );
     shortcut_plugin.on_shortcut(toggle_shortcut, {
         let app_handle = app.clone();
         move |_app, _shortcut, event| {
@@ -145,28 +147,77 @@ fn setup_global_shortcuts<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Resul
         }
     })?;
 
-    // Ctrl+Shift+M - TTS Screen Reader
+    // Ctrl+Shift+T - Read highlighted text / clipboard aloud via TTS
+    // (Maps to the Ctrl+TTM concept — Ctrl+Shift+T is the ergonomic equivalent)
     let tts_shortcut = Shortcut::new(
         Some(Modifiers::CONTROL | Modifiers::SHIFT),
-        Code::KeyM,
+        Code::KeyT,
     );
     shortcut_plugin.on_shortcut(tts_shortcut, {
-        let app_handle = app.clone();
         move |_app, _shortcut, event| {
             if event.state == ShortcutState::Pressed {
-                // Trigger screen capture and TTS
+                // Grab highlighted text (X11 primary selection) then fallback to clipboard
                 tauri::async_runtime::spawn(async move {
-                    if let Ok(content) = screen_reader::capture_active_window().await {
-                        // Send content for TTS
-                        let client = reqwest::Client::new();
-                        let _ = client
-                            .post("http://localhost:8080/tts")
-                            .json(&serde_json::json!({
-                                "text": content,
-                                "format": "wav",
-                            }))
-                            .send()
-                            .await;
+                    // Try X11 primary selection first (highlighted text)
+                    let text = tokio::process::Command::new("xsel")
+                        .args(["--primary", "--output"])
+                        .output()
+                        .await
+                        .ok()
+                        .and_then(|o| {
+                            if o.status.success() {
+                                let s = String::from_utf8_lossy(&o.stdout).trim().to_string();
+                                if !s.is_empty() { Some(s) } else { None }
+                            } else { None }
+                        });
+
+                    // Fallback to clipboard
+                    let text = match text {
+                        Some(t) => t,
+                        None => {
+                            tokio::process::Command::new("xclip")
+                                .args(["-selection", "clipboard", "-o"])
+                                .output()
+                                .await
+                                .ok()
+                                .and_then(|o| {
+                                    if o.status.success() {
+                                        let s = String::from_utf8_lossy(&o.stdout).trim().to_string();
+                                        if !s.is_empty() { Some(s) } else { None }
+                                    } else { None }
+                                })
+                                .unwrap_or_default()
+                        }
+                    };
+
+                    if text.is_empty() {
+                        eprintln!("[Lilim TTS] No text selected or in clipboard");
+                        return;
+                    }
+
+                    eprintln!("[Lilim TTS] Reading aloud: {}...", &text[..text.len().min(50)]);
+
+                    // Synthesize and play
+                    let output_path = "/tmp/lilim-read-aloud.wav";
+                    let result = tokio::process::Command::new("lilith-tts")
+                        .args(["speak", &text, "--output", output_path])
+                        .output()
+                        .await;
+
+                    match result {
+                        Ok(o) if o.status.success() => {
+                            // Play audio
+                            let _ = tokio::process::Command::new("aplay")
+                                .args([output_path])
+                                .output()
+                                .await;
+                        }
+                        Ok(o) => {
+                            eprintln!("[Lilim TTS] Synthesis failed: {}", String::from_utf8_lossy(&o.stderr));
+                        }
+                        Err(e) => {
+                            eprintln!("[Lilim TTS] Failed to run lilith-tts: {}", e);
+                        }
                     }
                 });
             }

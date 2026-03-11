@@ -1,0 +1,29 @@
+# Rust build artifacts
+/target
+Cargo.lock
+
+# Models (too large for git)
+*.gguf
+*.bin
+*.safetensors
+models/
+
+# Synthesized audio
+*.wav
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Voice data (user-specific)
+voices/

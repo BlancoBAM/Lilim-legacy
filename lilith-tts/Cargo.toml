@@ -1,0 +1,33 @@
+[package]
+name = "lilith-tts"
+version = "0.1.0"
+edition = "2021"
+description = "Lilith Linux TTS engine — pure-Rust voice synthesis using NeuTTS nano"
+license = "MIT"
+
+[[bin]]
+name = "lilith-tts"
+path = "src/main.rs"
+
+[lib]
+name = "lilith_tts"
+path = "src/lib.rs"
+
+[dependencies]
+# NeuTTS — pure-Rust TTS with GGUF backbone + NeuCodec decoder
+neutts = { version = "0.0.4", features = ["backbone", "espeak"] }
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Utility
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Audio playback (optional)
+rodio = { version = "0.20", optional = true }
+
+[features]
+default = []
+playback = ["rodio"]

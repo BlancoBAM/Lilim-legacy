@@ -79,3 +79,6 @@ venv/
 
 # Config overrides (keep template)
 config/lilim.yaml.local
+
+# ZeroClaw (vendored — rebuild from source)
+zeroclaw/

@@ -1,192 +1,206 @@
-# 🔥 Lilim AI Assistant
+<p align="center">
+  <img src="assets/lilith-icon.png" alt="Lilim" width="120" />
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org)
-[![Platform](https://img.shields.io/badge/platform-Linux-blue.svg)](https://www.linux.org/)
+<h1 align="center">Lilim</h1>
 
-**Lilim** is an intelligent multi-model AI assistant system designed for Lilith Linux, featuring advanced routing, local-first processing, and seamless desktop integration.
+<p align="center">
+  <strong>Infernal AI Assistant for Lilith Linux</strong><br/>
+  Sarcastic. Capable. Yours.
+</p>
 
----
-
-## ✨ Features
-
-### 🤖 Intelligent Multi-Model Routing
-- **Router Model** (Qwen2-0.5B): Fast query classification and model selection
-- **Main Agentic Model** (Qwen3-VL 4B): Local reasoning with vision capabilities
-- **TTS Model** (neutts-nano): Offline voice synthesis
-
-### 🌐 Flexible Provider System
-- Configure unlimited API providers (OpenAI, Anthropic, custom endpoints)
-- Automatic fallback to online providers for complex queries
-- Environment-based API key management
-- Support for multiple authentication methods
-
-### 🖥️ Desktop Integration
-- **System Tray**: Always-visible icon with quick access menu
-- **Global Hotkeys**:
-  - `Ctrl+L`: Toggle Lilim window
-  - `Ctrl+Shift+M`: TTS screen reader
-- **Native Window**: Tauri-based COSMIC desktop application
-- **Auto-start**: Launches with system
-
-### 🔊 Screen Reading & TTS
-- Capture browser content (full HTML, even off-screen)
-- Capture terminal output (prompt → stdout)
-- Text-to-speech synthesis with neutts-nano
-- Accessibility API integration
-
-### 🧠 RAG Knowledge Base
-- **Vector Search**: fastembed for semantic retrieval
-- **Keyword Search**: tantivy for full-text search
-- Pre-loaded domains:
-  - 📚 Linux/Ubuntu troubleshooting
-  - 🏥 Medical terminology & procedures
-  - 🎓 Academic study techniques
-
-### 🛠️ Agentic Tool Use
-- **Web Search**: Real-time information retrieval
-- **File Search**: Local filesystem operations
-- **Terminal**: Command execution (safe mode)
-- **YOLO Mode**: Optional auto-execution
-
-### 💾 Conversation Memory
-- SQLite-based chat history
-- Session management
-- Context window optimization
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#configuration">Configuration</a> •
+  <a href="#iphone-access">iPhone Access</a> •
+  <a href="#contributing">Contributing</a>
+</p>
 
 ---
 
-## 📦 Installation
+## Features
 
-### Method 1: .deb Package (Recommended)
+🔥 **Intelligent Chatbot** — Sarcastic but caring AI assistant with infernal personality, powered by LiteLLM (GPT-4o, Claude, Ollama, and more)
 
-```bash
-# Download and install
-wget https://github.com/BlancoBAM/Lilim/releases/latest/download/lilim-ai_0.1.0_amd64.deb
-sudo dpkg -i lilim-ai_0.1.0_amd64.deb
-sudo apt-get install -f  # Fix dependencies
+⌨️ **Global Hotkey** — `Ctrl+Shift+L` summons Lilim from anywhere on your desktop
+
+💻 **Code Execution** — Safely runs Python, JavaScript, and shell commands with user confirmation
+
+📅 **Task Scheduling** — Schedule one-time and recurring tasks via natural language
+
+🌐 **Browser Control** — Sandboxed web browsing for research and troubleshooting
+
+📱 **iPhone Access** — Control your desktop from your iPhone via secure Gateway API with pairing authentication
+
+🎙️ **Voice Synthesis** — Standalone TTS with NeuTTS nano (see [Lilith-TTS](https://github.com/BlancoBAM/Lilith-TTS))
+
+🛡️ **Security First** — Supervised autonomy, sandboxed execution, forbidden path enforcement, pairing-based auth
+
+## Architecture
+
+```
+ Ctrl+Shift+L
+     │
+ ┌───▼──────────┐    HTTP/SSE     ┌──────────────────────────┐
+ │ Tauri UI      │ ◄────────────► │   Open Interpreter :8000 │
+ │ (React flame) │                │   (Python brain)         │
+ └──────────────┘                │   • Lilim personality    │
+                                  │   • Code execution       │
+ ┌──────────────┐  HTTPS/WSS     │   • LiteLLM routing      │
+ │ iPhone       │ ◄──────────►  ├──────────────────────────┤
+ │ (Shortcuts)  │  :42617        │   ZeroClaw Runtime       │
+ └──────────────┘                │   • Gateway + pairing    │
+                                  │   • Cron scheduler       │
+                                  │   • Browser control      │
+                                  │   • Memory (SQLite)      │
+                                  └──────────────────────────┘
 ```
 
-### Method 2: From Source
+| Component | Tech | Purpose |
+|-----------|------|---------|
+| **Brain** | Python / Open Interpreter / LiteLLM | LLM routing, code execution, personality |
+| **Runtime** | Rust / ZeroClaw | Security, scheduling, gateway, memory |
+| **Desktop UI** | TypeScript / React / Tauri | Flame-themed chat interface |
+| **TTS** | Rust / NeuTTS | Standalone voice synthesis ([separate repo](https://github.com/BlancoBAM/Lilith-TTS)) |
+
+## Installation
+
+### Prerequisites
+
+- Linux (Ubuntu 22.04+ / Lilith Linux)
+- Python 3.10+
+- Rust 1.75+ (for ZeroClaw build)
+- Node.js 18+ (for Tauri UI)
+- `espeak-ng`, `cmake` (for TTS)
+
+### Quick Install
 
 ```bash
-# Clone repository
+# Clone
 git clone https://github.com/BlancoBAM/Lilim.git
 cd Lilim
 
 # Install system dependencies
-sudo apt-get install -y \
-    libgtk-3-dev \
-    libwebkit2gtk-4.0-dev \
-    libayatana-appindicator3-dev \
-    librsvg2-dev
+sudo apt install cmake espeak-ng python3-pip nodejs npm
 
-# Build and install
-sudo ./install.sh
+# Install Open Interpreter
+cd ../Lilim-v2 && pip install -e . && cd ../Lilim
+
+# Build ZeroClaw runtime
+git clone https://github.com/zeroclaw-labs/zeroclaw.git zeroclaw
+cd zeroclaw && cargo build --release && cd ..
+sudo cp zeroclaw/target/release/zeroclaw /usr/bin/
+
+# Deploy configs
+sudo mkdir -p /etc/lilith
+sudo cp config/zeroclaw.toml /etc/lilith/
+sudo cp config/lilim-identity.json /etc/lilith/
+
+# Install service
+sudo cp scripts/lilim-serve /usr/bin/
+sudo chmod +x /usr/bin/lilim-serve
+sudo cp systemd/system/lilith-ai.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now lilith-ai
 ```
 
-### System Requirements
-
-- **OS**: Ubuntu 24.04+ or compatible Linux distribution
-- **RAM**: 16GB+ recommended (8GB minimum)
-- **Disk**: 10GB for models and data
-- **CPU**: Modern x86_64 with AVX2 support
-- **GPU**: Optional (reduces local model latency)
-
----
-
-## 🚀 Usage
-
-### Desktop Application
-
-1. **Launch**: Press `Ctrl+L` or click the system tray icon
-2. **Ask Questions**: Type naturally in the chat interface
-3. **TTS Screen Reader**: Press `Ctrl+Shift+M` to read screen content
-
-### CLI (Optional)
+### Desktop App
 
 ```bash
-# Ask a question
-lilim ask "How do I restart a systemd service?"
-
-# Search knowledge base
-lilim search "cardiovascular system"
-
-# View conversation history
-lilim history
+cd lilim_desktop
+npm install
+npm run tauri dev
 ```
 
----
+## Usage
 
-## ⚙️ Configuration
+### Chat via Desktop
 
-Edit `/etc/lilith/lilim.yaml`:
+Press **`Ctrl+Shift+L`** to toggle the Lilim window. Type your message and press Enter.
 
-```yaml
-# Local Models
-models:
-  local:
-    router:
-      model_path: "/var/lib/lilith/models/qwen2-0.5b.gguf"
-    main:
-      model_path: "/var/lib/lilith/models/qwen3-vl-4b.gguf"
-    tts:
-      model_path: "/var/lib/lilith/models/neutts-nano-q4.gguf"
+### Example Conversations
 
-# Online Providers
-providers:
-  online:
-    - name: "openai"
-      api_url: "https://api.openai.com/v1/chat/completions"
-      model: "gpt-4o-mini"
-      
-# Routing
-routing:
-  prefer_local: true
-  max_local_latency_ms: 5000
+```
+You: What's my disk usage?
+Lilim: Let me check that for you...
+       > df -h
+       Your root partition is at 67% — plenty of room. No fires to put out... yet.
 
-# Hotkeys
-system:
-  hotkeys:
-    toggle_ui: "Ctrl+L"
-    tts_screen_reader: "Ctrl+Shift+M"
+You: Remind me to take a break in 30 minutes
+Lilim: Done. I'll bug you in 30 minutes. Don't blame me when you're startled.
+       > zeroclaw cron add-at "..." "Time for a break!"
+
+You: Help me study anatomy terms
+Lilim: *Cracks knuckles like a judgmental tutor*
+       Alright, let's quiz you. What's the difference between the axial
+       and appendicular skeleton?
 ```
 
----
+### Read Aloud (TTS)
 
-## 📚 Documentation
+Hold `Ctrl` and press `T`, `T`, `M` in rapid succession to read highlighted text or clipboard contents aloud using Lilith-TTS.
 
-- [**User Manual**](docs/USER_MANUAL.md) - Complete usage guide
-- [**Installation Guide**](docs/INSTALL_GUIDE.md) - Detailed setup instructions
-- [**API Reference**](docs/API_REFERENCE.md) - HTTP API documentation
+## Configuration
 
----
+### LLM Provider
 
-## 🗂️ Project Structure
+Edit the Lilim profile at `/etc/lilith/lilim-profile.py`:
+
+```python
+interpreter.llm.model = "gpt-4o-mini"           # OpenAI
+# interpreter.llm.model = "ollama/qwen3:4b"     # Local via Ollama
+# interpreter.llm.model = "anthropic/claude-3.5" # Anthropic
+```
+
+### Autonomy Level
+
+Edit `/etc/lilith/zeroclaw.toml`:
+
+```toml
+[autonomy]
+level = "supervised"  # "readonly", "supervised", "full"
+```
+
+### Hotkey
+
+The global hotkey can be changed in the Tauri source at `lilim_desktop/src-tauri/src/lib.rs`.
+
+## iPhone Access
+
+See [docs/iphone-setup.md](docs/iphone-setup.md) for full instructions.
+
+**Quick version:**
+1. Enable tunnel in `zeroclaw.toml` (`tunnel.provider = "cloudflare"`)
+2. Get pairing code from Lilim desktop app
+3. Create iOS Shortcut that POSTs to the gateway
+
+## Project Structure
 
 ```
 Lilim/
-├── lilim_core/           # Core functionality (RAG, config, API)
-├── lilim_server/         # HTTP API server
-├── lilim_desktop/        # Tauri desktop application
-├── lilim_tts/           # TTS engine (neutts-nano)
-├── lilim_cli/           # CLI tool
-├── lilith_rag_builder/  # RAG index builder
-├── lilith_search/       # RAG search utility
-├── config/              # Configuration templates
-├── packaging/           # .deb packaging scripts
-├── docs/                # Documentation
-└── install.sh           # Installation script
+├── assets/                    # Icons and images
+├── config/                    # ZeroClaw + identity configs
+│   ├── zeroclaw.toml
+│   └── lilim-identity.json
+├── desktop/                   # .desktop launcher entry
+├── docs/                      # Documentation
+├── lilim_desktop/             # Tauri desktop app (React + Rust)
+│   ├── src/                   # React frontend
+│   └── src-tauri/             # Tauri backend (Rust)
+├── scripts/                   # Server launch scripts
+├── systemd/                   # systemd service files
+└── lilith-tts/                # TTS module (separate repo)
 ```
 
----
+## Contributing
 
-## 📄 License
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Lilim is dual-licensed under MIT License and Apache License 2.0.
+## License
 
----
+This project is licensed under **AGPL-3.0** (inherited from Open Interpreter and ZeroClaw).
 
-<p align="center">
-  <strong>Built with 🔥 for Lilith Linux</strong>
-</p>
+See [LICENSE](LICENSE) for details.
