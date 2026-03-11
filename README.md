@@ -12,6 +12,7 @@
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#architecture">Architecture</a> •
+  <a href="#intelligence-layer">Intelligence</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
@@ -25,6 +26,12 @@
 
 🔥 **Intelligent Chatbot** — Sarcastic but caring AI assistant with infernal personality, powered by LiteLLM (GPT-4o, Claude, Ollama, and more)
 
+🧠 **Persistent Memory** — Remembers facts, preferences, and decisions across all conversations (Markdown vault you can inspect and edit)
+
+✨ **Automatic Prompt Enhancement** — Transparently enriches vague prompts with context, task structure, and system info for better LLM responses
+
+🎯 **Smart Model Routing** — Simple requests route to fast local models; complex ones auto-escalate to the best remote model within your daily budget
+
 ⌨️ **Global Hotkey** — `Ctrl+Shift+L` summons Lilim from anywhere on your desktop
 
 💻 **Code Execution** — Safely runs Python, JavaScript, and shell commands with user confirmation
@@ -37,7 +44,9 @@
 
 🎙️ **Voice Synthesis** — Standalone TTS with NeuTTS nano (see [Lilith-TTS](https://github.com/BlancoBAM/Lilith-TTS))
 
-🛡️ **Security First** — Supervised autonomy, sandboxed execution, forbidden path enforcement, pairing-based auth
+� **Read Aloud** — Highlight text + press `Ctrl+Shift+T` to hear it spoken
+
+�🛡️ **Security First** — Supervised autonomy, sandboxed execution, forbidden path enforcement, pairing-based auth
 
 ## Architecture
 
@@ -46,25 +55,78 @@
      │
  ┌───▼──────────┐    HTTP/SSE     ┌──────────────────────────┐
  │ Tauri UI      │ ◄────────────► │   Open Interpreter :8000 │
- │ (React flame) │                │   (Python brain)         │
- └──────────────┘                │   • Lilim personality    │
-                                  │   • Code execution       │
- ┌──────────────┐  HTTPS/WSS     │   • LiteLLM routing      │
- │ iPhone       │ ◄──────────►  ├──────────────────────────┤
- │ (Shortcuts)  │  :42617        │   ZeroClaw Runtime       │
- └──────────────┘                │   • Gateway + pairing    │
+ │ (React flame) │                │   ┌──────────────────┐   │
+ └──────────────┘                │   │ Prompt Enhancer  │   │
+                                  │   │ (classify+enrich)│   │
+ ┌──────────────┐  HTTPS/WSS     │   └───────┬──────────┘   │
+ │ iPhone       │ ◄──────────►  │           ▼              │
+ │ (Shortcuts)  │  :42617        │   ┌──────────────────┐   │
+ └──────────────┘                │   │  Model Router    │   │
+                                  │   │  (Plano+LiteLLM) │   │
+ ┌──────────────┐                │   └───────┬──────────┘   │
+ │ Memory Vault │ ◄────────────► │           ▼              │
+ │ (~/.local/   │  save/load     │   local ◄─┤─► remote    │
+ │  share/lilim/│                │   ollama  │  gpt-4o     │
+ │  memory/)    │                │           │  claude     │
+ └──────────────┘                ├──────────────────────────┤
+                                  │   ZeroClaw Runtime       │
+                                  │   • Gateway + pairing    │
                                   │   • Cron scheduler       │
                                   │   • Browser control      │
-                                  │   • Memory (SQLite)      │
+                                  │   • SQLite memory        │
                                   └──────────────────────────┘
 ```
 
 | Component | Tech | Purpose |
 |-----------|------|---------|
 | **Brain** | Python / Open Interpreter / LiteLLM | LLM routing, code execution, personality |
-| **Runtime** | Rust / ZeroClaw | Security, scheduling, gateway, memory |
+| **Memory** | Python / Markdown vault | Persistent knowledge graph (facts, decisions, sessions) |
+| **Enhancer** | Python / DSPy-inspired | Automatic prompt classification and enrichment |
+| **Router** | Python / Plano-inspired | Smart model selection with budget tracking |
+| **Runtime** | Rust / ZeroClaw | Security, scheduling, gateway, sandboxing |
 | **Desktop UI** | TypeScript / React / Tauri | Flame-themed chat interface |
 | **TTS** | Rust / NeuTTS | Standalone voice synthesis ([separate repo](https://github.com/BlancoBAM/Lilith-TTS)) |
+
+## Intelligence Layer
+
+Three modules in `lilim_core/` run transparently to make Lilim smarter:
+
+### Persistent Memory (Rowboat-inspired)
+
+After each conversation, Lilim extracts key facts, decisions, and preferences and saves them as Markdown notes:
+
+```
+~/.local/share/lilim/memory/
+├── people/user.md        # Your profile, learned preferences
+├── facts/general.md      # Facts about your system/environment
+├── decisions/             # Key choices you've made
+└── sessions/              # Conversation summaries
+```
+
+Before each response, relevant notes are loaded into context — so Lilim remembers you across sessions. Notes are Obsidian-compatible and fully inspectable.
+
+### Prompt Enhancement (Promptomatix-inspired)
+
+Short or vague prompts are automatically enriched before hitting the LLM:
+
+| You type | Lilim sees (enhanced) |
+|----------|----------------------|
+| "fix my wifi" | `[Task: system_admin. Provide exact commands...] fix my wifi [System: Ubuntu 22.04, wlan0 down...]` |
+| "quiz me on bones" | `[Task: tutoring. Use ELI10 approach...] quiz me on bones [Memory: studying for anatomy exam]` |
+| "hey" | `hey` *(casual messages pass through unchanged)* |
+
+### Smart Routing (Plano + LiteLLM)
+
+Requests are routed to the optimal model based on complexity:
+
+| Request | Model | Why |
+|---------|-------|-----|
+| "What time is it?" | `ollama/qwen3` (local) | Simple, fast, free |
+| "Help me study anatomy" | `ollama/qwen3` (local) | Tutoring, standard knowledge |
+| "Write a REST API server" | `gpt-4o-mini` (remote) | Code generation needs precision |
+| "Debug this Python traceback" | `claude-sonnet-4-20250514` (remote) | Deep code reasoning |
+
+Configure in `config/routing.toml` — set daily budget caps, override category routing, or force local-only mode.
 
 ## Installation
 
@@ -84,7 +146,7 @@ git clone https://github.com/BlancoBAM/Lilim.git
 cd Lilim
 
 # Install system dependencies
-sudo apt install cmake espeak-ng python3-pip nodejs npm
+sudo apt install cmake espeak-ng python3-pip nodejs npm xsel xclip
 
 # Install Open Interpreter
 cd ../Lilim-v2 && pip install -e . && cd ../Lilim
@@ -98,6 +160,7 @@ sudo cp zeroclaw/target/release/zeroclaw /usr/bin/
 sudo mkdir -p /etc/lilith
 sudo cp config/zeroclaw.toml /etc/lilith/
 sudo cp config/lilim-identity.json /etc/lilith/
+sudo cp config/routing.toml /etc/lilith/
 
 # Install service
 sudo cp scripts/lilim-serve /usr/bin/
@@ -121,6 +184,10 @@ npm run tauri dev
 
 Press **`Ctrl+Shift+L`** to toggle the Lilim window. Type your message and press Enter.
 
+### Read Aloud (TTS)
+
+Press **`Ctrl+Shift+T`** to read highlighted text (or clipboard contents) aloud via Lilith-TTS.
+
 ### Example Conversations
 
 ```
@@ -139,34 +206,42 @@ Lilim: *Cracks knuckles like a judgmental tutor*
        and appendicular skeleton?
 ```
 
-### Read Aloud (TTS)
-
-Hold `Ctrl` and press `T`, `T`, `M` in rapid succession to read highlighted text or clipboard contents aloud using Lilith-TTS.
-
 ## Configuration
 
-### LLM Provider
+### Model Routing
 
-Edit the Lilim profile at `/etc/lilith/lilim-profile.py`:
+Edit `config/routing.toml`:
 
-```python
-interpreter.llm.model = "gpt-4o-mini"           # OpenAI
-# interpreter.llm.model = "ollama/qwen3:4b"     # Local via Ollama
-# interpreter.llm.model = "anthropic/claude-3.5" # Anthropic
+```toml
+[routing]
+strategy = "auto"           # "auto", "local-only", "remote-only"
+local_model = "ollama/qwen3:4b"
+complexity_threshold = 0.6  # 0-1, above routes to remote
+budget_limit_daily = 5.00   # USD spending cap
+
+[routing.remote_models]
+fast = "gpt-4o-mini"
+balanced = "gpt-4o"
+reasoning = "claude-sonnet-4-20250514"
 ```
 
 ### Autonomy Level
 
-Edit `/etc/lilith/zeroclaw.toml`:
+Edit `config/zeroclaw.toml`:
 
 ```toml
 [autonomy]
 level = "supervised"  # "readonly", "supervised", "full"
 ```
 
-### Hotkey
+### Memory
 
-The global hotkey can be changed in the Tauri source at `lilim_desktop/src-tauri/src/lib.rs`.
+Inspect and edit your memory vault directly:
+
+```bash
+ls ~/.local/share/lilim/memory/
+# Edit with any Markdown editor or Obsidian
+```
 
 ## iPhone Access
 
@@ -182,15 +257,20 @@ See [docs/iphone-setup.md](docs/iphone-setup.md) for full instructions.
 ```
 Lilim/
 ├── assets/                    # Icons and images
-├── config/                    # ZeroClaw + identity configs
-│   ├── zeroclaw.toml
-│   └── lilim-identity.json
-├── desktop/                   # .desktop launcher entry
+├── config/                    # Runtime configuration
+│   ├── zeroclaw.toml          # ZeroClaw runtime settings
+│   ├── lilim-identity.json    # AIEOS persona specification
+│   └── routing.toml           # Model routing + budget config
+├── desktop/                   # .desktop launcher entries
 ├── docs/                      # Documentation
+├── lilim_core/                # Intelligence layer (Python)
+│   ├── memory_manager.py      # Persistent knowledge graph
+│   ├── prompt_enhancer.py     # Automatic prompt optimization
+│   └── model_router.py        # Smart model routing
 ├── lilim_desktop/             # Tauri desktop app (React + Rust)
 │   ├── src/                   # React frontend
 │   └── src-tauri/             # Tauri backend (Rust)
-├── scripts/                   # Server launch scripts
+├── scripts/                   # Server launch + panel scripts
 ├── systemd/                   # systemd service files
 └── lilith-tts/                # TTS module (separate repo)
 ```
